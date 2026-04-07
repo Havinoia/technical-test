@@ -1,0 +1,16 @@
+# Binaries
+main
+main.exe
+*.exe
+*.bin
+
+# Log files
+*.log
+fix_log_details.txt
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# PDF (as requested not to push)
+*.pdf

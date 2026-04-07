@@ -1,44 +1,51 @@
-# Stability Team Technical Test
+﻿# Task Manager API - Stability Team Technical Test
 
-This repository contains a simple Task Manager API built with Go and Fiber.
-Your task is to improve the stability and correctness of this system.
+This repository contains an improved version of the Task Manager API built with Go and Fiber. The system has been refactored for better stability, correctness, and performance.
 
-## Setup
+## Key Improvements & Fixes
 
-Install dependencies:
-go mod tidy
+### 1. Stability & Correctness Fixes
+- **Thread-Safe Storage**: Replaced the original slice-based storage with a \map[int]models.Task\ protected by a \sync.RWMutex\. This ensures the API remains stable and data-consistent under concurrent load.
+- **Fixed Logical Bugs**: 
+    - Resolved a common Go \"pointer-to-loop-variable\" bug in \GetTaskByID\ that could lead to returning incorrect task references.
+    - Fixed a slice manipulation bug in \DeleteTask\ where modifying a slice during iteration could cause runtime errors or skipped elements.
+- **Robust Error Handling**: Added validation for task IDs (ensuring they are valid integers) and implemented explicit error checks for all storage operations.
+- **RESTful HTTP Standards**: Updated handlers to return correct HTTP status codes:
+    - \404 Not Found\ for missing resources.
+    - \400 Bad Request\ for invalid input (e.g., non-numeric IDs, empty titles).
+    - \201 Created\ for successfully added tasks.
 
-Run the server:
-go run main.go
+### 2. General Enhancements
+- **Input Validation**: Implemented mandatory title checks for new tasks (rejecting empty or whitespace-only titles).
+- **Middleware Integration**: Added Fiber's \Logger\ and \Recover\ middlewares for enhanced request observability and application resilience against unexpected panics.
+- **Standardized API Responses**: All responses now follow a consistent structure, wrapping data in a \\"data\"\ field or providing clear \\"error\"\ messages.
+- **Automatic ID Management**: Task IDs are now managed internally by the store to prevent conflicts and ensure uniqueness.
 
-Server will run at:
-http://localhost:3000
+## Setup & Running
+
+1. **Install dependencies**:
+   \\\ash
+   go mod tidy
+   \\\
+
+2. **Run the server**:
+   \\\ash
+   go run main.go
+   \\\
+
+3. **Server access**:
+   The server runs at [http://localhost:3000](http://localhost:3000).
 
 ## Available Endpoints
 
-GET /tasks  
-GET /tasks/:id  
-POST /tasks  
-DELETE /tasks/:id
+| Method | Endpoint      | Description           |
+|--------|---------------|-----------------------|
+| GET    | \/tasks\      | List all tasks        |
+| GET    | \/tasks/:id\  | Get a specific task   |
+| POST   | \/tasks\      | Create a new task     |
+| DELETE | \/tasks/:id\  | Delete a task         |
 
-## Your Tasks
-
-1. Run the project
-2. Identify issues or bugs
-3. Fix the issues
-4. Add one improvement to the project
-
-Examples of improvements:
-- input validation
-- better error handling
-- improved API responses
-- code refactoring
-
-## Submission
-
-Submit a GitHub repository containing:
-- your updated code
-- a README explaining:
-  - what issues you found
-  - how you fixed them
-  - what improvement you added
+## Technologies Used
+- **Go** (v1.24+)
+- **Fiber** (v2)
+- **Standard sync package** for concurrency control
