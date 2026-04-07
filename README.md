@@ -50,3 +50,9 @@ The server runs at [http://localhost:3000](http://localhost:3000).
 | GET    | /tasks/:id | Get a specific task |
 | POST   | /tasks     | Create a new task   |
 | DELETE | /tasks/:id | Delete a task       |
+
+---
+
+### Candidate Information
+- **Name**: Havin Neo Dimas Nugraha
+- **Position**: Full Stack Developer Intern
